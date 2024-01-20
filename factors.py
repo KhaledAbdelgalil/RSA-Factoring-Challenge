@@ -2,6 +2,20 @@
 from sys import argv
 import math
 
+def primefactor(n):
+    if n <= 3:
+        return int(n)
+    if n % 2 == 0:
+        return 2
+    elif n % 3 == 0:
+        return 3
+    else:
+        for i in range(5, int((n)**0.5) + 1, 6):
+            if n % i == 0:
+                return int(i)
+            if n % (i + 2) == 0:
+                return primefactor(n/(i+2))
+    return int(n)
 def pollards_rho(n):
     if n % 2 == 0:
         return 2
@@ -32,6 +46,9 @@ def factorize(number):
         i = i + 1
     return number // i, i
 
+def factorize2(number):
+    i = primefactor(number)
+    return i, number // i
 if len(argv) != 2:
         exit(1)
 
@@ -43,7 +60,7 @@ try:
 
         while line != "":
             number = int(line.split('\n')[0])
-            factor1, factor2 = factorize_faster(number)
+            factor1, factor2 = factorize2(number)
             print(f"{number}={factor1}*{factor2}")
             line = file.readline()
 except:

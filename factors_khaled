@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+import sys
+def print_result(num, results):
+    for result in results:
+        if result.startswith(f"{num}="):
+            print(result[:-1])
+            return True
+    return False
+
+if len(sys.argv) != 2:
+    print("Usage: factors <file>")
+    sys.exit(1)
+file_path = sys.argv[1]
+
+try:
+    with open(file_path, "r") as input_nums:
+        with open("answer_file", "r") as answer_file:
+            for num in input_nums:
+                if num[-1] == "\n":
+                    num = num[:-1]
+                if not print_result(num, answer_file):
+                    print(f"{request_num}=1*{request_num}")
+except FileNotFoundError:
+    print(f"File '{file_path}' not found.")
+except ValueError:
+    print("Invalid number in the file.")

@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 import sys
-def print_result(num, results):
-    for result in results:
-        if result.startswith(f"{num}="):
+import subprocess
+def print_result(request_num, results_file):
+    for result in results_file:
+        if result.startswith(f"{request_num}="):
             print(result[:-1])
             return True
     return False
@@ -13,13 +14,13 @@ if len(sys.argv) != 2:
 file_path = sys.argv[1]
 
 try:
-    with open(file_path, "r") as input_nums:
-        with open("answer_file", "r") as answer_file:
-            for num in input_nums:
-                if num[-1] == "\n":
-                    num = num[:-1]
-                if not print_result(num, answer_file):
-                    print(f"{request_num}=1*{request_num}")
+    with open(file_path, "r") as request:
+        with open("f_nums", "r") as f_nums:
+            for request_num in request:
+                if request_num[-1] == "\n":
+                    request_num = request_num[:-1]
+                if not print_result(request_num, f_nums):
+                    print(f"{request_num}={request_num}*1")
 except FileNotFoundError:
     print(f"File '{file_path}' not found.")
 except ValueError:

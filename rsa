@@ -1,43 +1,26 @@
 #!/usr/bin/python3
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import sys
+def print_result(num, answers):
+    for answer in answers:
+        if answer.startswith(f"{num}="):
+            print(answer[:-1])
+            return True
+    return False
 
-from sys import argv
+if len(sys.argv) != 2:
+    print("Usage: factors <file>")
+    sys.exit(1)
+file_path = sys.argv[1]
 
-# Set your email and password
-sender_email = "khaledalxrsa@gmail.com"
-sender_password = "cyyb auvl cbii hvot"
-
-# Set the recipient email address
-recipient_email = "khaledahmedsoftware.1996@gmail.com"
-
-# Create the MIME object
-message = MIMEMultipart()
-message["From"] = sender_email
-message["To"] = recipient_email
-message["Subject"] = "RSA"
-
-# Add the body of the email
-body = ""
-with open(argv[1]) as file:
-    body = file.readline()
-message.attach(MIMEText(body, "plain"))
-
-# Set up the SMTP server
-smtp_server = "smtp.gmail.com"
-smtp_port = 587
-
-# Start the server
-server = smtplib.SMTP(smtp_server, smtp_port)
-server.starttls()
-
-# Login to your email account
-server.login(sender_email, sender_password)
-
-# Send the email
-server.sendmail(sender_email, recipient_email, message.as_string())
-
-# Quit the server
-server.quit()
-
+try:
+    with open(file_path, "r") as inputs:
+        with open("answers", "r") as answers:
+            for num in inputs:
+                if num[-1] == "\n":
+                    num = num[:-1]
+                if not print_result(num, answers):
+                    print(f"{num}={num}*1")
+except FileNotFoundError:
+    print(f"File '{file_path}' not found.")
+except ValueError:
+    print("Invalid number in the file.")
